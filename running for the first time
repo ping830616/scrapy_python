@@ -1,0 +1,65 @@
+Running the first spider in Pycharm:
+
+
+import scrapy
+
+class PostsSpiders(scrapy.Spider):
+   name = "posts"
+   start_urls = [
+       'http://www.discipleshiplibrary.com/index.php'
+   ]
+
+   def parse(self, response):
+       title = response.css('title::text').extract()
+       yield {'titletext': title}
+
+
+
+There is a period of time that I could not figure out why ‘scrapy’ is not able to be recognized as an internal or external command until it got fixed finally after a few days.
+Running the first spider
+Discipleship Library:
+http://www.discipleshiplibrary.com/index.php
+Extracting the data with CSS selector
+          
+(we need to run this first: scrapy shell “http://www.discipleshiplibrary.com/index.php”)
+
+
+response.css("title")
+[<Selector xpath='descendant-or-self::title' data='<title>Discipleship Library - Surrend...'>]
+
+response.css("title").extract()
+Extract <title> content from HTML data
+['<title>Discipleship Library - Surrender Teachableness Teaching Teamwork Teenagers Temperaments Temptation Testimony Thankfulness Thru the Bible Radio Time Management Titus Tongue</title>']
+response.css("title::text").extract()
+Leave the text inside only
+['Discipleship Library - Surrender Teachableness Teaching Teamwork Teenagers Temperaments Temptation Testimony Thankfulness Thru the Bible Radio Time Management Titus Tongue']
+
+
+
+response.css("title::text")[0].extract()
+Print the text from the beginning ([0]) within the square brackets
+'Discipleship Library - Surrender Teachableness Teaching Teamwork Teenagers Temperaments Temptation Testimony Thankfulness Thru the Bible Radio Time Management Titus Tongue'
+
+response.css("title::text").extract_first()
+The result is the same as that on the top one
+'Discipleship Library - Surrender Teachableness Teaching Teamwork Teenagers Temperaments Temptation Testimony Thankfulness Thru the Bible Radio Time Management Titus Tongue'
+
+ response.css("p.welcome::text").extract()
+["The online source for the very best in Christian discipleship training resources.\xa0\xa0We're digitizing thousands of classic studies that have been presented over the last 60 years and will be making them available for online training or downloading to your multimedia-ready computer.\xa0\xa0Our "]
+
+response.css("p.welcome::text")[0].extract()
+"The online source for the very best in Christian discipleship training resources.\xa0\xa0We're digitizing thousands of classic studies that have been presented over the last 60 years and will be making them available for online training or downloading to your multimedia-ready computer.\xa0\xa0Our "
+
+
+Another method, other than CSS Selectors, is xpath 
+ response.xpath("//title").extract()
+['<title>Discipleship Library - Sovereignty Spanish Bible Speech Spirit-Filled Life Spiritual Decline Spiritual Gifts Spiritual Growth Spiritual Multiplication Spiritual Warfare Stewardship Stress Management Student Ministry Submission Suffering</title>']
+ response.xpath("//title/text()").extract()
+['Discipleship Library - Sovereignty Spanish Bible Speech Spirit-Filled Life Spiritual Decline Spiritual Gifts Spiritual Growth Spiritual Multiplication Spiritual Warfare Stewardship Stress Management Student Ministry Submission Suffering']
+response.xpath("//p[@class='welcome']/text()").extract()
+["The online source for the very best in Christian discipleship training resources.\xa0\xa0We're digitizing thousands of classic studies that have been presented over the last 60 years and will be making them available for online training or downloading to your multimedia-ready computer.\xa0\xa0Our "]
+response.css("p.welcome a").xpath("@href").extract()
+['mission.php']
+response.css("a").xpath("@href").extract()
+All of the links printed out
+['mission.php', 'dawson_trotman.php', 'dawson_trotman.php', 'http://turret2.discipleshiplibrary.com/1A.mp3', 'mms://wma.discipleshiplibrary.com/1A.wma', 'jim_downing.php', 'jim_downing.php', 'http://turret2.discipleshiplibrary.com/A356A.mp3', 'mms://wma.discipleshiplibrary.com/A356A.wma', 'irma_warr.php', 'irma_warr.php', 'http://turret2.discipleshiplibrary.com/OKC2006_11.mp3', 'mms://wma.discipleshiplibrary.com/OKC2006_11.wma', 'bob_boardman.php', 'bob_boardman.php', 'http://turret2.discipleshiplibrary.com/V0300.mp3', 'mms://wma.discipleshiplibrary.com/V0300.wma', 'kirkie_morrissey.php', 'kirkie_morrissey.php', 'http://turret2.discipleshiplibrary.com/APP00082.mp3', 'mms://wma.discipleshiplibrary.com/APP00082.wma', 'john_hunter.php', 'john_hunter.php', 'http://turret2.discipleshiplibrary.com/HH261A.mp3', 'mms://wma.discipleshiplibrary.com/HH261A.wma', 'featured_series.php', 'bwc.php', 'godly_man.php', 'godly_woman.php', 'interpersonal_relationship.php', 'scriptural_home.php', 'fom.php', 'personal_witnessing.php', 'making_disciples.php', 'josh_mcdowell_classics.php', 'iea_om.php', 'master_plan.php', 'LifeImpact2014.php', 'daily_discipleship.php', 'http://turret2.discipleshiplibrary.com/DD0116.mp3', 'mms://wma.discipleshiplibrary.com/DD0116.wma', 'tms.php', 'bible_aag.php', 'bible_id.php', 'thruthebible.php', 'audio_bible.php', 'foundations_fd.php', 'http://turret2.discipleshiplibrary.com/NET01920.mp3', 'mms://wma.discipleshiplibrary.com/NET01920.wma', 'http://turret2.discipleshiplibrary.com/NET00683.mp3', 'mms://wma.discipleshiplibrary.com/NET00683.wma', 'http://turret2.discipleshiplibrary.com/TMS_MSG60Vs.mp3', 'mms://wma.discipleshiplibrary.com/TMS_MSG60Vs.mp3', 'http://turret2.discipleshiplibrary.com/APP01235.mp3', 'mms://wma.discipleshiplibrary.com/APP01235.wma', 'http://turret2.discipleshiplibrary.com/R1000.mp3', 'mms://wma.discipleshiplibrary.com/R1000.wma', 'http://turret2.discipleshiplibrary.com/NET02311.mp3', 'mms://wma.discipleshiplibrary.com/NET02311.wma', 'http://turret2.discipleshiplibrary.com/NET00731.mp3', 'mms://wma.discipleshiplibrary.com/NET00731.wma', 'http://turret2.discipleshiplibrary.com/BSU154ABA.mp3', 'mms://wma.discipleshiplibrary.com/BSU154ABA.wma', 'http://turret2.discipleshiplibrary.com/ED0019.mp3', 'mms://wma.discipleshiplibrary.com/ED0019.wma']
